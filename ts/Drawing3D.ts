@@ -22,7 +22,7 @@ export class Drawing3D {
     html(viewer: Point3D): string {
         const path_texts: string[] = [];
         this.paths_3d.forEach((path_3d) => {
-            path_texts.push(path_3d.html(viewer));
+            path_texts.push(path_3d.htmls(viewer).join(' '));
         });
 
         return path_texts.join(' ');

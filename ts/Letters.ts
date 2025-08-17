@@ -154,6 +154,18 @@ export class Letters {
             ]),
         ]));
 
+        map.set("ä", new Drawing2D([
+            new Path2D([
+                (new Point2D(  0, 200)),
+                (new Point2D(100,  50)),
+                (new Point2D(200, 200)),
+            ]),
+            new Path2D([
+                (new Point2D( 50, 100)),
+                (new Point2D(150, 100)),
+            ], "stroke:red"),
+        ]));
+
         map.set("_", new Drawing2D([
             new Path2D([
                 (new Point2D(  0, 200)),

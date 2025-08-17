@@ -12,5 +12,6 @@ export declare class Point3D {
     rotateZ(radians: number): Point3D;
     move(amount_3d: Point3D): Point3D;
     negate(): Point3D;
+    equals(point_3d: Point3D): boolean;
 }
 //# sourceMappingURL=Point3D.d.ts.map

@@ -46,13 +46,6 @@ export class Point3D {
             this.y,
             this.z * cos - this.x * sin,
         );
-
-
-        return new Point3D(
-            this.z * sin - this.x * cos,
-            this.y,
-            this.z * cos + this.x * sin,
-        );
     }
 
     rotateZ(radians: number): Point3D {
@@ -80,5 +73,12 @@ export class Point3D {
             -this.y,
             -this.z,
         );
+    }
+
+    equals(point_3d: Point3D): boolean {
+        return this.x === point_3d.x
+            && this.y === point_3d.y
+            && this.z === point_3d.z
+        ;
     }
 }

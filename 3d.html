@@ -1,25 +1,3 @@
-angle x
-<input type='button' onclick='angle_increase_x += angle_change;' value='+' />
-<input type='button' onclick='angle_increase_x -= angle_change;' value='-' />
-<span id='angle_x'></span>
-<br>
-
-angle y
-<input type='button' onclick='angle_increase_y += angle_change;' value='+' />
-<input type='button' onclick='angle_increase_y -= angle_change;' value='-' />
-<span id='angle_y'></span>
-<br>
-
-angle z
-<input type='button' onclick='angle_increase_z += angle_change;' value='+' />
-<input type='button' onclick='angle_increase_z -= angle_change;' value='-' />
-<span id='angle_z'></span>
-<br>
-
-Use arrow keys + shift / alt.
-<br>
-<br>
-
 <style>
     .svg_icon {
         stroke:         black;
@@ -30,7 +8,44 @@ Use arrow keys + shift / alt.
         stroke-width:   0.01;
         stroke-linecap: round;
     }
+    #debug {
+        float:right;
+        width:35%;
+    }
 </style>
+
+<div id='debug'>
+    Use arrow keys + shift / alt.
+    <br>
+    <br>
+    <table>
+        <tr><td>angle_change           </td><td>                    </td><td><span id='angle_change'           ></span></td></tr>
+        <tr><td>movement_change        </td><td>                    </td><td><span id='movement_change'        ></span></td></tr>
+        <tr><td>extra_angle_x          </td><td>                    </td><td><span id='extra_angle_x'          ></span></td></tr>
+        <tr><td>extra_angle_y          </td><td>                    </td><td><span id='extra_angle_y'          ></span></td></tr>
+        <tr><td>extra_angle_z          </td><td>                    </td><td><span id='extra_angle_z'          ></span></td></tr>
+        <tr><td>angle_increase_x       </td><td>                    </td><td><span id='angle_increase_x'       ></span></td></tr>
+        <tr><td>angle_increase_y       </td><td>left / right + alt                    </td><td><span id='angle_increase_y'       ></span></td></tr>
+        <tr><td>angle_increase_z       </td><td>up / down + alt                    </td><td><span id='angle_increase_z'       ></span></td></tr>
+        <tr><td>viewer_increase_x      </td><td>                    </td><td><span id='viewer_increase_x'      ></span></td></tr>
+        <tr><td>viewer_increase_y      </td><td>                    </td><td><span id='viewer_increase_y'      ></span></td></tr>
+        <tr><td>viewer_increase_z      </td><td>up / down + shift   </td><td><span id='viewer_increase_z'      ></span></td></tr>
+        <tr><td>viewer_angle_increase_x</td><td>up / down           </td><td><span id='viewer_angle_increase_x'></span></td></tr>
+        <tr><td>viewer_angle_increase_y</td><td>left / right + shift</td><td><span id='viewer_angle_increase_y'></span></td></tr>
+        <tr><td>viewer_angle_increase_z</td><td>left / right        </td><td><span id='viewer_angle_increase_z'></span></td></tr>
+        <tr><td>printable_text         </td><td>                    </td><td><span id='printable_text'         ></span></td></tr>
+        <tr><td>letters                </td><td>                    </td><td><span id='letters'                ></span></td></tr>
+        <tr><td>angle_x                </td><td>                    </td><td><span id='angle_x'                ></span></td></tr>
+        <tr><td>angle_y                </td><td>                    </td><td><span id='angle_y'                ></span></td></tr>
+        <tr><td>angle_z                </td><td>                    </td><td><span id='angle_z'                ></span></td></tr>
+        <tr><td>viewer_angle_x         </td><td>                    </td><td><span id='viewer_angle_x'         ></span></td></tr>
+        <tr><td>viewer_angle_y         </td><td>                    </td><td><span id='viewer_angle_y'         ></span></td></tr>
+        <tr><td>viewer_angle_z         </td><td>                    </td><td><span id='viewer_angle_z'         ></span></td></tr>
+        <tr><td>viewer_x               </td><td>                    </td><td><span id='viewer_x'               ></span></td></tr>
+        <tr><td>viewer_y               </td><td>                    </td><td><span id='viewer_y'               ></span></td></tr>
+        <tr><td>viewer_z               </td><td>                    </td><td><span id='viewer_z'               ></span></td></tr>
+    </table>
+</div>
 
 <svg id="svg_entity" class="svg_icon" viewBox="-2 -2 4 4" xmlns="http://www.w3.org/2000/svg"></svg>
 
@@ -41,8 +56,8 @@ Use arrow keys + shift / alt.
     var extra_angle_y           = 0.0;
     var extra_angle_z           = 0.0;
     var angle_increase_x        = 0.0;
-    var angle_increase_y        = angle_change;
-    var angle_increase_z        = angle_change;
+    var angle_increase_y        = 0.0;
+    var angle_increase_z        = 0.0;
     var viewer_increase_x       = 0.0;
     var viewer_increase_y       = 0.0;
     var viewer_increase_z       = 0.0;
@@ -90,26 +105,30 @@ Use arrow keys + shift / alt.
             } else {
                 viewer_angle_increase_z -= angle_change;  // turn
             }
-        // Arrow up.
+        // Arrow down.
         } else if (e.keyCode === 40) {
+            console.log('d');
             if (e.shiftKey === true) {
-                viewer_increase_z -= angle_change;  // thrust
+                viewer_increase_z -= movement_change;  // thrust
             } else if (e.altKey === true) {
-                viewer_increase_y += movement_change;
+                angle_increase_z += angle_change;
             } else {
                 viewer_angle_increase_x += angle_change;  // turn
             }
-        // Arrow down.
+        // Arrow up.
         } else if (e.keyCode === 38) {
             if (e.shiftKey === true) {
-                viewer_increase_z += angle_change;
+                viewer_increase_z += movement_change;
             } else if (e.altKey === true) {
-                viewer_increase_y -= movement_change;
+                angle_increase_z -= angle_change;
+            } else if (e.ctrlKey === true) {
+                extra_angle_z -= angle_change;
             } else {
                 viewer_angle_increase_x -= angle_change;  // turn
             }
         } else {
-            console.log('key does not exist');
+            extra_angle_y += 6.28;
+            console.log('unknown character ' + e.key);
         }
 
         console.log(e.keyCode);
@@ -120,6 +139,7 @@ Use arrow keys + shift / alt.
     import { Drawing2D } from "./ts/js/Drawing2D.js";
     import { Drawing3D } from "./ts/js/Drawing3D.js";
     import { Letters } from "./ts/js/Letters.js";
+    import { Line3D } from "./ts/js/Line3D.js";
     import { Path2D } from "./ts/js/Path2D.js";
     import { Path3D } from "./ts/js/Path3D.js";
     import { Picture2D } from "./ts/js/Picture2D.js";
@@ -127,28 +147,30 @@ Use arrow keys + shift / alt.
     import { Point2D } from "./ts/js/Point2D.js";
     import { Point3D } from "./ts/js/Point3D.js";
     import { Rotation } from "./ts/js/Rotation.js";
+    import { Tests } from "./ts/js/Tests.js";
     import { Text } from "./ts/js/Text.js";
 
-    var angle_x  = 0.0;
-    var angle_y  = 0.0;
-    var angle_z  = 0.0;
-    var viewer_angle_x  = 0.0;
-    var viewer_angle_y  = 0.0;
-    var viewer_angle_z  = 0.0;
-    var viewer_x = 0;
-    var viewer_y = 0;
-    var viewer_z = -1200;
+    var angle_x        = 0.0;
+    var angle_y        = 0.0;
+    var angle_z        = 0.0;
+    var viewer_angle_x = 0.0;
+    var viewer_angle_y = 0.0;
+    var viewer_angle_z = 0.0;
+    var viewer_x       = 0;
+    var viewer_y       = 0;
+    var viewer_z       = -1500;
+    var origo          = new Point3D(0, 0, 0);
 
     function refreshSvg() {
-        angle_x  += angle_increase_x;
-        angle_y  += angle_increase_y;
-        angle_z  += angle_increase_z;
-        viewer_angle_x  += viewer_angle_increase_x;
-        viewer_angle_y  += viewer_angle_increase_y;
-        viewer_angle_z  += viewer_angle_increase_z;
-        viewer_x += viewer_increase_x;
-        viewer_y += viewer_increase_y;
-        viewer_z += viewer_increase_z;
+        angle_x        += angle_increase_x;
+        angle_y        += angle_increase_y;
+        angle_z        += angle_increase_z;
+        viewer_angle_x += viewer_angle_increase_x;
+        viewer_angle_y += viewer_angle_increase_y;
+        viewer_angle_z += viewer_angle_increase_z;
+        viewer_x       += viewer_increase_x;
+        viewer_y       += viewer_increase_y;
+        viewer_z       += viewer_increase_z;
 
         if (extra_angle_x !== 0) {
             const tmp = extra_angle_x / 5;
@@ -168,9 +190,31 @@ Use arrow keys + shift / alt.
             extra_angle_z -= tmp;
         }
 
-        document.getElementById('angle_x').innerHTML = angle_x;
-        document.getElementById('angle_y').innerHTML = angle_y;
-        document.getElementById('angle_z').innerHTML = angle_z;
+        document.getElementById('angle_change'           ).innerHTML = angle_change;
+        document.getElementById('movement_change'        ).innerHTML = movement_change;
+        document.getElementById('extra_angle_x'          ).innerHTML = extra_angle_x;
+        document.getElementById('extra_angle_y'          ).innerHTML = extra_angle_y;
+        document.getElementById('extra_angle_z'          ).innerHTML = extra_angle_z;
+        document.getElementById('angle_increase_x'       ).innerHTML = angle_increase_x;
+        document.getElementById('angle_increase_y'       ).innerHTML = angle_increase_y;
+        document.getElementById('angle_increase_z'       ).innerHTML = angle_increase_z;
+        document.getElementById('viewer_increase_x'      ).innerHTML = viewer_increase_x;
+        document.getElementById('viewer_increase_y'      ).innerHTML = viewer_increase_y;
+        document.getElementById('viewer_increase_z'      ).innerHTML = viewer_increase_z;
+        document.getElementById('viewer_angle_increase_x').innerHTML = viewer_angle_increase_x;
+        document.getElementById('viewer_angle_increase_y').innerHTML = viewer_angle_increase_y;
+        document.getElementById('viewer_angle_increase_z').innerHTML = viewer_angle_increase_z;
+        document.getElementById('printable_text'         ).innerHTML = printable_text;
+        document.getElementById('letters'                ).innerHTML = letters;
+        document.getElementById('angle_x'                ).innerHTML = angle_x;
+        document.getElementById('angle_y'                ).innerHTML = angle_y;
+        document.getElementById('angle_z'                ).innerHTML = angle_z;
+        document.getElementById('viewer_angle_x'         ).innerHTML = viewer_angle_x;
+        document.getElementById('viewer_angle_y'         ).innerHTML = viewer_angle_y;
+        document.getElementById('viewer_angle_z'         ).innerHTML = viewer_angle_z;
+        document.getElementById('viewer_x'               ).innerHTML = viewer_x;
+        document.getElementById('viewer_y'               ).innerHTML = viewer_y;
+        document.getElementById('viewer_z'               ).innerHTML = viewer_z;
 
         let rotation = new Rotation(
             angle_x,
@@ -228,7 +272,7 @@ Use arrow keys + shift / alt.
                 (new Point3D(  0, 200, 200)),
             ]),
         ]).move(
-            (new Point3D(-100, -100, -1000)),
+            (new Point3D(500, -100, -1000)),
         );
 
         picture_3d = new Picture3D([
@@ -250,6 +294,7 @@ Use arrow keys + shift / alt.
 
         let picture_3d_rotated = new Picture3D(drawings_3d_rotated);
         picture_3d_rotated = picture_3d_rotated.rotate(viewer_rotation, viewer);
+        // picture_3d_rotated = picture_3d_rotated.rotate(viewer_rotation, origo);
 
         document.getElementById('svg_entity').innerHTML = picture_3d_rotated.html(viewer);
     }
@@ -264,4 +309,6 @@ Use arrow keys + shift / alt.
     updatePicture3d();
 
     const intervalID = setInterval(refreshSvg, 10);
+
+    Tests.run();
 </script>

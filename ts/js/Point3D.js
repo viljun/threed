@@ -25,7 +25,6 @@ export class Point3D {
         const sin = Math.sin(radians);
         const cos = Math.cos(radians);
         return new Point3D(this.z * sin + this.x * cos, this.y, this.z * cos - this.x * sin);
-        return new Point3D(this.z * sin - this.x * cos, this.y, this.z * cos + this.x * sin);
     }
     rotateZ(radians) {
         const sin = Math.sin(radians);
@@ -37,6 +36,11 @@ export class Point3D {
     }
     negate() {
         return new Point3D(-this.x, -this.y, -this.z);
+    }
+    equals(point_3d) {
+        return this.x === point_3d.x
+            && this.y === point_3d.y
+            && this.z === point_3d.z;
     }
 }
 //# sourceMappingURL=Point3D.js.map

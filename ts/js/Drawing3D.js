@@ -16,7 +16,7 @@ export class Drawing3D {
     html(viewer) {
         const path_texts = [];
         this.paths_3d.forEach((path_3d) => {
-            path_texts.push(path_3d.html(viewer));
+            path_texts.push(path_3d.htmls(viewer).join(' '));
         });
         return path_texts.join(' ');
     }
