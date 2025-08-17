@@ -107,7 +107,6 @@
             }
         // Arrow down.
         } else if (e.keyCode === 40) {
-            console.log('d');
             if (e.shiftKey === true) {
                 viewer_increase_z -= movement_change;  // thrust
             } else if (e.altKey === true) {
@@ -246,19 +245,21 @@
         letters.get("n").move(new Point2D( 400,  50)).toDrawing3D().move(new Point3D(0, 0,  400)),
         letters.get("a").move(new Point2D( 600, 100)).toDrawing3D().move(new Point3D(0, 0,    0)),
     ];
-    for (let i = 1; i < 1000;i++) {
+    for (let i = 1; i < 100;i++) {
         const cube_3d = Cube3D.getCube();
         drawings.push(cube_3d.move(new Point3D(
-            (Math.random() - 0.5) * 300000 - 100,
-            (Math.random() - 0.5) * 300000 - 100,
-            (Math.random() - 0.5) * 300000 - 100,
+            (Math.random() - 0.5) * 100000 - 100,
+            (Math.random() - 0.5) * 100000 - 100,
+            (Math.random() - 0.5) * 100000 - 100,
         )));
     }
 
     window.updatePicture3d = () => {
-        let str = printable_text + "_";
-        let text = new Text(str, letters);
-        const tmp_drawings = drawings;
+        const text = new Text(printable_text + "_", letters);
+        const tmp_drawings = [];
+        drawings.forEach((tmp) => {
+            tmp_drawings.push(tmp);
+        });
         tmp_drawings.push(text.toDrawing2D().toDrawing3D().move(new Point3D(-800, -800, 4000)));
         picture_3d = new Picture3D(tmp_drawings);
     }
