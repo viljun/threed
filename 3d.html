@@ -136,6 +136,7 @@
 </script>
 
 <script type="module">
+    import { Cube3D } from "./ts/js/Cube3D.js";
     import { Drawing2D } from "./ts/js/Drawing2D.js";
     import { Drawing3D } from "./ts/js/Drawing3D.js";
     import { Letters } from "./ts/js/Letters.js";
@@ -158,7 +159,7 @@
     var viewer_angle_z = 0.0;
     var viewer_x       = 0;
     var viewer_y       = 0;
-    var viewer_z       = -1500;
+    var viewer_z       = -160;
     var origo          = new Point3D(0, 0, 0);
 
     function refreshSvg() {
@@ -235,54 +236,31 @@
         update(rotation, viewer_rotation, viewer);
     }
 
+    const letters = Letters.getMap();
+    window.getLetters = () => {
+        return letters;
+    }
+    const drawings = [
+        letters.get("k").move(new Point2D(   0,  50)).toDrawing3D().move(new Point3D(0, 0, 1200)),
+        letters.get("a").move(new Point2D( 200,   0)).toDrawing3D().move(new Point3D(0, 0,  800)),
+        letters.get("n").move(new Point2D( 400,  50)).toDrawing3D().move(new Point3D(0, 0,  400)),
+        letters.get("a").move(new Point2D( 600, 100)).toDrawing3D().move(new Point3D(0, 0,    0)),
+    ];
+    for (let i = 1; i < 1000;i++) {
+        const cube_3d = Cube3D.getCube();
+        drawings.push(cube_3d.move(new Point3D(
+            (Math.random() - 0.5) * 300000 - 100,
+            (Math.random() - 0.5) * 300000 - 100,
+            (Math.random() - 0.5) * 300000 - 100,
+        )));
+    }
+
     window.updatePicture3d = () => {
         let str = printable_text + "_";
         let text = new Text(str, letters);
-
-        let cube = new Drawing3D([
-            new Path3D([
-                (new Point3D(  0,   0, 0)),
-                (new Point3D(200,   0, 0)),
-                (new Point3D(200, 200, 0)),
-                (new Point3D(  0, 200, 0)),
-                (new Point3D(  0,   0, 0)),
-            ]),
-            new Path3D([
-                (new Point3D(  0,   0, 200)),
-                (new Point3D(200,   0, 200)),
-                (new Point3D(200, 200, 200)),
-                (new Point3D(  0, 200, 200)),
-                (new Point3D(  0,   0, 200)),
-            ]),
-
-            new Path3D([
-                (new Point3D(  0,   0,   0)),
-                (new Point3D(  0,   0, 200)),
-            ]),
-            new Path3D([
-                (new Point3D(200,   0,   0)),
-                (new Point3D(200,   0, 200)),
-            ]),
-            new Path3D([
-                (new Point3D(200, 200,   0)),
-                (new Point3D(200, 200, 200)),
-            ]),
-            new Path3D([
-                (new Point3D(  0, 200,   0)),
-                (new Point3D(  0, 200, 200)),
-            ]),
-        ]).move(
-            (new Point3D(500, -100, -1000)),
-        );
-
-        picture_3d = new Picture3D([
-            cube,
-            letters.get("k").move(new Point2D(   0,  50)).toDrawing3D().move(new Point3D(0, 0, 1200)),
-            letters.get("a").move(new Point2D( 200,   0)).toDrawing3D().move(new Point3D(0, 0,  800)),
-            letters.get("n").move(new Point2D( 400,  50)).toDrawing3D().move(new Point3D(0, 0,  400)),
-            letters.get("a").move(new Point2D( 600, 100)).toDrawing3D().move(new Point3D(0, 0,    0)),
-            text.toDrawing2D().move(new Point2D(-2300, -1000)).toDrawing3D(),
-        ]);
+        const tmp_drawings = drawings;
+        tmp_drawings.push(text.toDrawing2D().toDrawing3D().move(new Point3D(-800, -800, 4000)));
+        picture_3d = new Picture3D(tmp_drawings);
     }
 
     function update(rotation, viewer_rotation, viewer) {
@@ -300,15 +278,10 @@
     }
 
     let picture_3d;
-    const letters = Letters.getMap();
-
-    window.getLetters = () => {
-        return letters;
-    }
 
     updatePicture3d();
 
-    const intervalID = setInterval(refreshSvg, 10);
+    const intervalID = setInterval(refreshSvg, 30);
 
     Tests.run();
 </script>
